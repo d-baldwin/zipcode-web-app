@@ -39,7 +39,7 @@ func main() {
 	c := session.DB("zips_production").C("zips")
 
 
-	// What is the population with San Francisco zipcodes
+	// What is the population with San Francisco zipcodes?
 	var result []Zip
 	err = c.Find(bson.M{"city": "SAN FRANCISCO"}).Select(bson.M{"pop": 1}).All(&result)
 	if err != nil {
