@@ -7,6 +7,7 @@ import (
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"log"
+	"text/template"
 )
 
 
@@ -16,6 +17,12 @@ type Zip struct {
 	Loc []float64 `json:"loc"`
 	Pop int `json:"pop"`
 	State string `json:"state"`
+}
+
+var tpl *template.Template
+
+func init() {
+	tpl = template.Must(template.ParseGlob("templates/*.gohtml"))
 }
 
 
@@ -51,8 +58,11 @@ func main() {
 		cityPopulation += code.Pop
 	}
 
-	fmt.Printf("San Francisco zip code population is %v\n", cityPopulation)
-
+	// use text Template to view result
+	err = tpl.ExecuteTemplate(os.Stdout, "city_population.gohtml", cityPopulation)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 
 }
